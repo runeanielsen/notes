@@ -54,13 +54,5 @@ The description includes
 
 
 
-
-
-
-
-
-
-
-
-
-
+## Thanks to
+[Kubernetes in Action By Marko Luksa](https://www.manning.com/books/kubernetes-in-action-second-edition?a_aid=kubiaML)
