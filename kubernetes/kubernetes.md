@@ -42,7 +42,7 @@ The worker nodes are the machines that run your containerized applications. The 
 * The Kubernetes Service Proxy (kube-proxy), which load-balances network traffic between application components.
 
 
-## Running an application in Kubernetes
+## Running an application
 To run an application in Kubernetes you need to package it up into one or more container images, push those images to an image registry, and then post a description of your app to the Kubernetes API server.
 
 The description includes
@@ -51,8 +51,24 @@ The description includes
 * How those components are related to each other.
 * Which ones need to run on the same nodes and which don't. 
 *For each component, you can specify how many replicas you want to run. Additionally, the description also includes which of those components provide a service to either internal or external client and should be exposed through a single IP address and made discoverable to the other components. 
+* Which components that should provide a service to internal or external clients and should be exposed through a single IP address and made discoverable to other components. 
 
+## Description
+The workflow applying a description.
 
+1. The API server processes your app's description, the Scheduler schedules the specificed groups of containers onto the available worker nodes based on the computational requirements of each group and the unallocated resources on each node at the time.
+
+2. The Kubelet on those nodes instructs the Container Runtime to pull the required container images and run the containers.  
+
+Once the application is running, Kubernetes makes sure that the deployed state of the application always matches the description you provided. So if a node goes down then Kubernetes will redistribute the workload out to the existing nodes.
+
+## Scaling
+Kubernetes allows increasing and decreasing the number of copies, and Kubernetes will spin up additional ones or stop the excess ones. It is possible to give the job of optimizing the amount of replicas based on metrics such as CPU load and memory etc.
+
+## Load balancing
+To allow clients to find containers that provide a specific service, you tell Kubernetes which containers provide the same service and Kubernetes will expose them all though a single static IP. The kube-proxy will make sure connections to the service are load balanced across all the containers that provide the service.
+
+The IP address of the service is always constant, even if nodes go down.
 
 ## Thanks to
 [Kubernetes in Action By Marko Luksa](https://www.manning.com/books/kubernetes-in-action-second-edition?a_aid=kubiaML)
