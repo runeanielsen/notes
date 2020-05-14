@@ -76,5 +76,5 @@ The IP address of the service is always constant, even if nodes go down.
 
 ## Thanks to
 
-[Kubernetes in Action By Marko Luksa](https://www.manning.com/books/kubernetes-in-action-second-edition?a_aid=kubiaML)
-[Getting Started with Kubernetes By Nigel Poulton](https://www.pluralsight.com/courses/getting-started-kubernetes)
+* [Kubernetes in Action By Marko Luksa](https://www.manning.com/books/kubernetes-in-action-second-edition?a_aid=kubiaML)
+* [Getting Started with Kubernetes By Nigel Poulton](https://www.pluralsight.com/courses/getting-started-kubernetes)
