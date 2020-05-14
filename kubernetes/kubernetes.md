@@ -13,14 +13,15 @@ Kubernetes can be thought of as an operating system for the cluster. It relieves
 Kubernetes will run your containerized app somewhere in the cluster, provide information to its components on how to find each other, and keep all of them running.
 
 ## Two types of nodes
+
 A kubernetes cluster is composed of two types of nodes. 
 
 * The master node, which hosts the Kubernetes Control Plane and controls and manages the whole Kubernetes system.
 
 * Worker nodes that run the actual applications you deploy.
 
-
 ## The control plane
+
 The control plane is what controls the cluster and makes it function. It consists of multiple components that can run on a single master node or be split across multiple nodes and replicated to ensure high availability.
 
 * The Kubernetes API server, which you and the other Control Plane components communicate with
@@ -31,8 +32,8 @@ The control plane is what controls the cluster and makes it function. It consist
 
 * etcd, a reliable distributed data store that persistently stores the cluster configuration.
 
-
 ## The Nodes
+
 The worker nodes are the machines that run your containerized applications. The task of running , monitoring, and providing services to your applications is done by the following components:
 
 * Docker, rkt, or another container runtime, which runs your containers.
@@ -41,8 +42,8 @@ The worker nodes are the machines that run your containerized applications. The 
 
 * The Kubernetes Service Proxy (kube-proxy), which load-balances network traffic between application components.
 
-
 ## Running an application
+
 To run an application in Kubernetes you need to package it up into one or more container images, push those images to an image registry, and then post a description of your app to the Kubernetes API server.
 
 The description includes
@@ -54,21 +55,26 @@ The description includes
 * Which components that should provide a service to internal or external clients and should be exposed through a single IP address and made discoverable to other components. 
 
 ## Description
+
 The workflow applying a description.
 
 1. The API server processes your app's description, the Scheduler schedules the specificed groups of containers onto the available worker nodes based on the computational requirements of each group and the unallocated resources on each node at the time.
 
-2. The Kubelet on those nodes instructs the Container Runtime to pull the required container images and run the containers.  
+2. The Kubelet on those nodes instructs the Container Runtime to pull the required container images and run the containers.
 
 Once the application is running, Kubernetes makes sure that the deployed state of the application always matches the description you provided. So if a node goes down then Kubernetes will redistribute the workload out to the existing nodes.
 
 ## Scaling
+
 Kubernetes allows increasing and decreasing the number of copies, and Kubernetes will spin up additional ones or stop the excess ones. It is possible to give the job of optimizing the amount of replicas based on metrics such as CPU load and memory etc.
 
 ## Load balancing
+
 To allow clients to find containers that provide a specific service, you tell Kubernetes which containers provide the same service and Kubernetes will expose them all though a single static IP. The kube-proxy will make sure connections to the service are load balanced across all the containers that provide the service.
 
 The IP address of the service is always constant, even if nodes go down.
 
 ## Thanks to
+
 [Kubernetes in Action By Marko Luksa](https://www.manning.com/books/kubernetes-in-action-second-edition?a_aid=kubiaML)
+[Getting Started with Kubernetes By Nigel Poulton](https://www.pluralsight.com/courses/getting-started-kubernetes)
