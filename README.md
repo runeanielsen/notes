@@ -1,4 +1,4 @@
-# Personal notes
+# Notes
 
 This repository contains notes on various topics
 
