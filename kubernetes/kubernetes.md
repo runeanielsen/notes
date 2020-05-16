@@ -76,6 +76,7 @@ The IP address of the service is always constant, even if nodes go down.
 
 
 ## Pods
+
 Kubernetes do not deal with individual containers directly. Instead, it uses the concept of multiple co-located containers. The collection of containers is called a Pod.
 
 A pod is a group of one or more tightly related containers that will always run together on the same worker node and in the same Linux namespace(s). Each pod is like a seperate logical machine with its own IP, hostname, processes, and so, running a single application.
@@ -84,7 +85,25 @@ All the containers in a pod will appear to be running on the same logical machin
 
 
 ### Access the Pod
+
 To access a pod from the outside a service object is used. A service of type LoadBalancer is used to expose the Pod to external clients otherwise by using a CluserIp service it can only be accessed from inside the cluster. By creating a LoadBalancer type service, an external load balancer will be created and you can connect to the pod through the load balancers public ip.
+
+
+### Pod Network
+
+All pods in a Kubernetes cluster reside in a single flat, shared, netowrk-address space, which means every pod can access every other pod at the other pod's IP address. No netwrosk address translation gateways exist between them. When two pods send networks packets between each other, they'll each see the actual IP address of the other as the source IP in the packet.
+
+This means that communication between pods is always simple. The communication is much like computers on a LAN. Like a computer on a LAN, each pod gets its own IP address and is accessible from all other pods through this network established specifically for pods.
+
+
+### Pod Definition
+
+The pod definition consists of a few parts. First, there's the Kubernetes API version used in the YAML and the type of resource the YAML is describing. Then, three important sections are found in almost all Kubernetes resources:
+
+* Metadata includes the name, namespace, labels, and other information about the pod.
+* Spec contains the actual description of the pod's contents, such as the pod's containers, volumes, and other data.
+* Status contains the current information about the running pod, such as what condition the pod is in, the description and status of each container, and the pod's internal IP and other basic info.
+
 
 
 ## Thanks to
