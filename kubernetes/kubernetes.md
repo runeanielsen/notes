@@ -95,6 +95,13 @@ All pods in a Kubernetes cluster reside in a single flat, shared, netowrk-addres
 
 This means that communication between pods is always simple. The communication is much like computers on a LAN. Like a computer on a LAN, each pod gets its own IP address and is accessible from all other pods through this network established specifically for pods.
 
+#### Port forward pod to local network
+
+In case of debugging or other reasons you can port-forward a pod to the local machine network using the following command:
+
+```bash
+kubectl port-forward $podname $portnumber:$portnumber 
+```
 
 ### Pod Definition
 
