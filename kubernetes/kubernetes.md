@@ -104,7 +104,23 @@ The pod definition consists of a few parts. First, there's the Kubernetes API ve
 * Spec contains the actual description of the pod's contents, such as the pod's containers, volumes, and other data.
 * Status contains the current information about the running pod, such as what condition the pod is in, the description and status of each container, and the pod's internal IP and other basic info.
 
+Specifying ports in the pod defition is purely informational. Ommiting them has no effect on whether clients can connect to the pod through the port or not. If the container is accepting connections through a port bound to the 0.0.0.0 address, other pods can always connect to it, even if the port isn't listed in the pod spec explicitly.
 
+Example of a simple Pod definition
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kubia-manual
+spec:
+  containers:
+  - image: runeanielsen/kubia
+    name: kubia
+    ports:
+    - containerPort: 8080
+      protocol: TCP
+```
 
 ## Thanks to
 
