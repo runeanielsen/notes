@@ -156,9 +156,17 @@ To get containers on labels with specific labels the following command can be us
 
 ```bash
 kubectl get po -L cration_method,env
-
 ```
 
+## Annotations
+
+Kubernetes resources can contain annotations. A annotation is a key-value pair, they're similar to labels, but aren't meant to hold identifying information. A annoation cannot be used to group resources but it is used for holding much bigger information and that information is maent to be used by tools. Certain annotations are automatically added to Kubernetes resources. A great use of annotations are to add descriptions for pods and other resources. 
+
+Example of adding a annotation to a pod.
+
+```bash
+kubectl annotate pod kubia-manual mycompany.com/someannotation="foo bar"
+```
 
 ## Thanks to
 
