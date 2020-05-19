@@ -152,6 +152,13 @@ spec:
       protocol: TCP
 ```
 
+To get containers on labels with specific labels the following command can be used, showing how to receive all pods with label creation_method : env.
+
+```bash
+kubectl get po -L cration_method,env
+
+```
+
 
 ## Thanks to
 
