@@ -133,16 +133,16 @@ spec:
 
 Labels are a Kubernetes feature to organize not only pods but all Kubernetes resources. A label is a key-value pair you attach to a resource, which is then used for label selectors. A resource can have multiple labels, as long as the keys of those labels are unique. It is possible to add and modify labels on an existing resource without having to recreate that resource.
 
-Example of a pod definition with two labels: 
+Example of a pod definition with two labels: 'creation_mode: manual', 'env: prod'.
 
 ```yaml
 apiVersion: v1
 kind: Pod
 metadata:
   name: kubia-manual
-labels:
-  creation_mode: manual
-  end: prod
+  labels:
+    creation_method: manual
+    env: prod
 spec:
   containers:
   - image: runeanielsen/kubia
