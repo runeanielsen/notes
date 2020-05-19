@@ -168,6 +168,15 @@ Example of adding a annotation to a pod.
 kubectl annotate pod kubia-manual mycompany.com/someannotation="foo bar"
 ```
 
+## Namespaces
+
+Namespaces allow you to split complex systems with numerous components into smaller distinct groups. They can also be used to seperate resources in a multi-tenant environment. A common use-case for namespaces are to split resources up into production, staging and development.
+
+Resource names do only need to be unique within the namespaces - this allows multiple resources to have the same name as long as they're in seperate namespaces.
+
+Not all resource types are seperated across namespaces, one of them is the node resource type that is global and is not tied to a single namespace. 
+
+
 ## Thanks to
 
 * [Kubernetes in Action By Marko Luksa](https://www.manning.com/books/kubernetes-in-action-second-edition?a_aid=kubiaML)
