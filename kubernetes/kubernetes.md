@@ -99,7 +99,7 @@ This means that communication between pods is always simple. The communication i
 
 In case of debugging or other reasons you can port-forward a pod to the local machine network using the following command:
 
-```bash
+```sh
 kubectl port-forward $podname $portnumber:$portnumber 
 ```
 
@@ -154,7 +154,7 @@ spec:
 
 To get containers on labels with specific labels the following command can be used, showing how to receive all pods with label creation_method : env.
 
-```bash
+```sh
 kubectl get po -L cration_method,env
 ```
 
@@ -164,7 +164,7 @@ Kubernetes resources can contain annotations. A annotation is a key-value pair, 
 
 Example of adding a annotation to a pod.
 
-```bash
+```sh
 kubectl annotate pod kubia-manual mycompany.com/someannotation="foo bar"
 ```
 
@@ -175,6 +175,12 @@ Namespaces allow you to split complex systems with numerous components into smal
 Resource names do only need to be unique within the namespaces - this allows multiple resources to have the same name as long as they're in seperate namespaces.
 
 Not all resource types are seperated across namespaces, one of them is the node resource type that is global and is not tied to a single namespace. 
+
+To get resources in a specific namespace, in this example the filtered namespace is 'kube-system'.
+
+```sh
+kubectl get po --namespace kube-system
+```
 
 
 ## Thanks to
