@@ -173,7 +173,7 @@ kubectl annotate pod kubia-manual mycompany.com/someannotation="foo bar"
 
 Namespaces allow you to split complex systems with numerous components into smaller distinct groups. They can also be used to seperate resources in a multi-tenant environment. A common use-case for namespaces are to split resources up into production, staging and development.
 
-Resource names do only need to be unique within the namespaces - this allows multiple resources to have the same name as long as they're in seperate namespaces.
+Resource names do only need to be unique within the namespaces - this allows multiple resources to have the same name as long as they're in seperate namespaces. Namespaces do not provide network isolation by default, this means that pods accross different namespaces can talk to each other.
 
 Not all resource types are seperated across namespaces, one of them is the node resource type that is global and is not tied to a single namespace. 
 
@@ -199,10 +199,16 @@ To create a resource in the namespace you've created you can either add a metada
 kubectl create -f resource-definition.yaml -n custom-namespace
 ```
 
-When having multiple namespaces you're required to use the '-n' flag to manage resources in different namespaces. To quickly switch between namespaces create an alias like this to switch between contexts.
+When having multiple namespaces you're required to use the '-n' flag to manage resources in different namespaces. To quickly switch between namespaces create an alias like this to switch between contexts, you can then switch context by using 'kcd --namespace some-namespace'
 
 ```sh
 alias kcd='kubectl config set-context $(kubectl config current-context) --namespace'
+```
+
+By deleting a namespace all resources in that namespace will also be deleted.
+
+```sh
+kubectl delete ns custom-namespace
 ```
 
 
