@@ -179,7 +179,7 @@ Not all resource types are seperated across namespaces, one of them is the node 
 To get resources in a specific namespace, in this example the filtered namespace is 'kube-system'.
 
 ```sh
-kubectl get po --namespace kube-system
+kubectl get po -n kube-system
 ```
 
 
