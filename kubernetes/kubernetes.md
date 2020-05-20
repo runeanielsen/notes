@@ -313,6 +313,41 @@ This can be done by using the 'cascade' flag and setting it to false.
 kubectl delete rc kubia --cascade=false
 ```
 
+## ReplicaSets
+
+In the beginning ReplicationController were the only Kubernetes component for replicating pods and rescheduling them when nodes failed. Later, ReplicaSet was introduced. It's a new generation of ReplicationController and replaces it completely (ReplicationController will eventually be deprecated). ReplicaSets are almost identical to ReplicationControllers.
+
+You usually won't create ReplicaSets directrly, but instead have them created automatically when you create the higher-level Deployment resource. 
+
+### ReplicaSets vs ReplicationController
+
+A ReplicaSet behaves exactly like a ReplicationController, but it has more expressive pod selectors. Whereas a ReplicationController's label selector only allows matching pods that includes a certain label, a ReplicaSet's selector also allows matching pods that lack a certain label or pods that include a certain label key, regardless of its value.
+
+A ReplicationController can't match pods with two different key values as the same time. But a single ReplicaSet can match both at the same time and treat them a single group.
+
+Example of a ReplicaSet.
+
+```yaml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: kubia
+spec: 
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kubia
+  template:
+    metadata:
+      labels:
+        app: kubia
+    spec:
+      containers:
+      - name: kubia
+        image: runeanielsen/kubia
+```
+
+
 ## Thanks to
 
 * [Kubernetes in Action By Marko Luksa](https://www.manning.com/books/kubernetes-in-action-second-edition?a_aid=kubiaML)
