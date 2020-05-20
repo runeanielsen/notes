@@ -421,6 +421,87 @@ spec:
       image: runeanielsen/ssd-monitor
 ```
 
+## Job resource
+
+Kubernetes includes support for not continious tasks using the 'Job' resource. The 'Job' resources allows you to run a pod whose container isn't restarted when the process running inside finishes successfully. 
+
+In the case of a node failure, the pods on that node that are managed by a Job will be rescheduled to other nodes the way ReplicaSet pods are.
+
+Jobs are useful for ad hoc tasks, where its crucial that the task finishes properly. You could run the task in an unmanaged pod and for it to finish, but in the event of a node failing or the pod being evicted from the node while it is performing its task, you'd need to manually recreate it.
+
+Example of a Job definition
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: batch-job
+spec:
+  template:
+    metadata:
+      labels:
+        app: batch-job
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: main
+        image: runeanielsen/batch-job
+```
+
+
+### Jobs in parallel
+
+Jobs may be configured to create more than one pod intance and run them in parallel or sequentially. This is done by setting the completions and parallelism properties in the Job spec.
+
+If you need the Job to run more than once, you can set the completions to the amount of times that you want the Job's pod to run.
+
+This example will run five pods one after the other.
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: multi-completion-batch-job
+spec:
+  completions: 5
+template:
+    metadata:
+      labels:
+        app: batch-job
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: main
+        image: runeanielsen/batch-job
+```
+
+### Cron Jobs
+
+When a job needs to be run at a specific time 'Cron Jobs' are used.
+
+Example of a CronJob
+
+```yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: batch-job-every-fifteen-minutes
+spec:
+  schedule: "0,15,30,45 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: periodic-batch-job
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: main
+            image: runeanielsen/batch-job
+```
+
+
 ## Thanks to
 
 * [Kubernetes in Action By Marko Luksa](https://www.manning.com/books/kubernetes-in-action-second-edition?a_aid=kubiaML)
