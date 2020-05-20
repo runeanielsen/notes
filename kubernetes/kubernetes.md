@@ -668,6 +668,28 @@ spec:
 
 If your Kubernetes cluster cannot provision a LoadBalancer a NodePort will be used instead.
 
+## Volumes
+
+Kubernetes volumes are a component of a pod and are thus defined in the pod's specification, much like containers. They aren't a standalone Kubernetes object and cannot be created or deleted on their own. A volume is available to all containers in the pod, but it must be mounted in each container that needs to access it. In each container, you can mount the volume in any location of the filesystem.
+
+A wide variety of volume types is available. Several are generic, while others are specific to the actual storage technologies. 
+
+* emptyDir - A simple empty directory used for storing transient data.
+
+* hostPath - Used for mounting directories from the workers node's filesystem into the pod.
+
+* gitRepo - A volume initialized by checking out the contents of a Git repository.
+
+* nfs - An NFS share mounted into the pod.
+
+* gcePersistentDisk - (Google Compute Engine Persistent Disk), awsElastic-BlockStore, azureDisk - Used for mounting cloud provider-specific storage.
+
+* cinder (* more) - Used for mounting other types of network storage.
+
+* configMap, secret, downwardAPI - Special types of volumes used to expose certain Kubernetes resources and cluster information to the pod.
+
+* persistentVolumeClaim - A way to use a pre- or dynamically provisioned persistent storage.
+
 ## Thanks to
 
 * [Kubernetes in Action By Marko Luksa](https://www.manning.com/books/kubernetes-in-action-second-edition?a_aid=kubiaML)
