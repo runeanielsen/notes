@@ -162,6 +162,7 @@ kubectl get po -L cration_method,env
 
 Kubernetes resources can contain annotations. A annotation is a key-value pair, they're similar to labels, but aren't meant to hold identifying information. A annoation cannot be used to group resources but it is used for holding much bigger information and that information is maent to be used by tools. Certain annotations are automatically added to Kubernetes resources. A great use of annotations are to add descriptions for pods and other resources. 
 
+
 Example of adding a annotation to a pod.
 
 ```sh
@@ -180,6 +181,28 @@ To get resources in a specific namespace, in this example the filtered namespace
 
 ```sh
 kubectl get po -n kube-system
+```
+
+
+Example of creating a namespace definition in yaml.
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: custom-namespace
+```
+
+To create a resource in the namespace you've created you can either add a metadata tag called 'namespace' in the definition file or set it doing the resource creation.
+
+```sh
+kubectl create -f resource-definition.yaml -n custom-namespace
+```
+
+When having multiple namespaces you're required to use the '-n' flag to manage resources in different namespaces. To quickly switch between namespaces create an alias like this to switch between contexts.
+
+```sh
+alias kcd='kubectl config set-context $(kubectl config current-context) --namespace'
 ```
 
 
