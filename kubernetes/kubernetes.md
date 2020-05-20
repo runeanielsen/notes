@@ -317,11 +317,11 @@ kubectl delete rc kubia --cascade=false
 
 In the beginning ReplicationController were the only Kubernetes component for replicating pods and rescheduling them when nodes failed. Later, ReplicaSet was introduced. It's a new generation of ReplicationController and replaces it completely (ReplicationController will eventually be deprecated). ReplicaSets are almost identical to ReplicationControllers.
 
-You usually won't create ReplicaSets directrly, but instead have them created automatically when you create the higher-level Deployment resource. 
+You usually won't create ReplicaSets directly, but instead have them created automatically when you create the higher-level Deployment resource. 
 
 ### ReplicaSets vs ReplicationController
 
-A ReplicaSet behaves exactly like a ReplicationController, but it has more expressive pod selectors. Whereas a ReplicationController's label selector only allows matching pods that includes a certain label, a ReplicaSet's selector also allows matching pods that lack a certain label or pods that include a certain label key, regardless of its value.
+A ReplicaSet behaves exactly like a ReplicationController, but it has more expressive pod selectors. Where as a ReplicationController's label selector only allows matching pods that includes a certain label, a ReplicaSet's selector also allows matching pods that lack a certain label or pods that include a certain label key, regardless of its value.
 
 A ReplicationController can't match pods with two different key values as the same time. But a single ReplicaSet can match both at the same time and treat them a single group.
 
@@ -347,6 +347,44 @@ spec:
         image: runeanielsen/kubia
 ```
 
+The main improvements of ReplicaSets over ReplicaitonControllers are their more expressive label selectors. You can either use the simple 'matchLabels' selector or use the more expressive 'matchExpressions' selector.
+
+Example of ReplicaSet using 'matchExpressions'.
+
+```yaml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: kubia
+spec: 
+  replicas: 3
+  selector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - kubia
+  template:
+    metadata:
+      labels:
+        app: kubia
+    spec:
+      containers:
+      - name: kubia
+        image: runeanielsen/kubia
+```
+
+The 'matchExpressions' can contain the following four operators:
+
+* In - Labels value mustmatch one of the specified values.
+
+* NotIN - Labels value must not match any of the specified values.
+
+* Exists - Pod must include a label with the specified key (the value isn't important). When using this operator, you shouldn't specify the 'values' field.
+
+* DoesNotExist - Pod must not include a label with the specified key. The 'values' property must not be specified.
+
+If you specify multiple expressions, all those expressions must evaluate to true for the selector to match a pod. 
 
 ## Thanks to
 
