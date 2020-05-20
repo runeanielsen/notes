@@ -378,7 +378,7 @@ The 'matchExpressions' can contain the following four operators:
 
 * In - Labels value mustmatch one of the specified values.
 
-* NotIN - Labels value must not match any of the specified values.
+* NotIn - Labels value must not match any of the specified values.
 
 * Exists - Pod must include a label with the specified key (the value isn't important). When using this operator, you shouldn't specify the 'values' field.
 
