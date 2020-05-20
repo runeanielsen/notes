@@ -390,6 +390,37 @@ The 'matchExpressions' can contain the following four operators:
 
 If you specify multiple expressions, all those expressions must evaluate to true for the selector to match a pod. 
 
+## DaemonSet
+
+DaemonSet object is much like a ReplicationController or ReplicaSet, expect that pods created by a DaemonSet already have a target node specified and skip the Kubernetes Scheduler. They aren't scattered around the cluster randomly. A DaemonSet makes sure it creates as many pods as there are nodes and deploys each one on its own node. Whereas a ReplicaSet or ReplicationController makes sure that a desired number of pods replicas exist in the cluster, a DaemonSet does not have any notion of a desired replica count it just makes sure that a pod matching its pod selector is running on each node.
+
+DaemonSet automatically deploys a new pod instance when a new node is added to the cluster.
+
+DaemonSet deploys pods to all nodes in the cluster by default, unless you specify that the pods should only run on a subset of all the nodes. To do this the 'nodeSelector' is used.
+
+Example of a DaemonSet that is only deployed on nodes with SSD disks.
+
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ssd-monitor
+spec:
+  selector:
+    matchLabels:
+      app: ssd-monitor
+  template:
+    metadata:
+      labels:
+        app: ssd-monitor
+    spec:
+      nodeSelector:
+        disk: ssd
+      containers:
+    - name: main
+      image: runeanielsen/ssd-monitor
+```
+
 ## Thanks to
 
 * [Kubernetes in Action By Marko Luksa](https://www.manning.com/books/kubernetes-in-action-second-edition?a_aid=kubiaML)
