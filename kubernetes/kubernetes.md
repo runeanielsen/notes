@@ -501,6 +501,132 @@ spec:
             image: runeanielsen/batch-job
 ```
 
+## Services
+
+A Kubernetes Service is a resource you create to make a single, contant point of entry to a group of pods providing the same service. Each service has an IP address and port that never change while the service exists. Clients can then open a connection to that IP and port, that connection is then routed to one of the pods backing that service. This way, clients of a service don't need to know the location of individual pods providing the service, allowing those pods to be moved around the cluster at any time.
+
+Example of a service definition. The example only exposes the group of pods to other pods in the cluster.
+
+```yaml
+apiVersion
+kind: Service
+metadata:
+  name: kubia
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: kubia
+```
+
+You can send request to your service from within the cluster in a few ways:
+
+* The obvious way is to create a pod that will send the request to the service's cluster IP and log the response. You can then examine the pod's log to see what the service's response was.
+
+* You can ssh into one of the Kubernetes nodes and use the curl command. 
+
+* You can execute the curl command inside one of your existing pods through the kubectl exec command.
+
+Example of kubectl exec command
+
+```sh
+kubectl exec pod-name -- curl -s http://pod-ip
+```
+
+If you want all requests made by a certain client to be redirected to the same pod every time, you can set the service's 'sessionAffinity' property to 'ClientIp' (instread of 'Node', which is the default).
+
+### Multiple ports
+
+Services can also support multiple ports. Example could be two different ports one for HTTP and one for HTTPS.
+
+Example
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubia
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  - name: https
+    port: 443
+    targetPort: 8443
+  selector:
+    app: kubia
+```
+
+### Discovering services through environment variables
+
+When a pod is started, Kubernetes initializes a set of environment variables pointing to each service taht exists at the moment. If you create the service before creating the client pods, processes in those pods can get the IP address and port of the serivce by inspecting their environment variables.
+
+An example of a environment variable for the Kubia service 'KUBIA_SERVICE_HOST', 'KUBIA_SERVICE.PORT'.
+
+### Exposing services to the outside
+
+To create a service with manually managed endpoints, you need to create both a Service and an Endpoint resource.
+
+#### Creating a service without a selector
+
+This example defines a service called 'external-service' that will accept incomming connections on port 80. Notice that a pod selector is not defined for this service.
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-service
+spec:
+  ports:
+  - port: 80
+
+```
+
+#### Creating an endpoint resource for a service without a selector
+
+Endpoints are a seperate resource and not an attribute of a service. The following shows a definition for an endpoint.
+
+```yaml
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: external-service
+subsets:
+  - addresses:
+    - ip: 11.11.11.11
+    - ip: 22.22.22.22
+    ports:
+    - port: 80
+```
+
+Instead of exposing an external service manually configuring the service's Endpoints, a simpler method allows you to refer to an external service by its fully qualified domain name (FQDN).
+
+To create a service that serves as an alias for an external service, you create a Service resource with the type field set to 'ExternalName'.
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-service
+spec:
+  type: ExternalName
+  externalName: someapi.somecompany.com
+  ports:
+  - port: 80
+```
+
+### Exposing services to external clients
+
+There is a few ways to make a service accessible externally:
+
+* Setting the service type to NodePort - For a NodePort service, each cluster node opens a port on the node itself and redirects traffic received on that port to the underlying service. The service isn't accessible only at the internal cluster IP and port, but also through a dedicated port on all nodes.
+
+* Setting the service type to LoadBalancer, an extension of the NodePort type - This makes the service accessible through a dedicated load balancer, provisioned from the cloud infrastructure Kubernetes is running on. The load balancer redirects traffic to the nod eport across all nodes. Clients connect to the service through the load balancers IP.
+
+* Creating an Ingress resource, a radically different mechanism for exposing multiple services through a single IP address - It operates at the HTTP level and can thus offer more features than layer 4 services can.
+
 
 ## Thanks to
 
