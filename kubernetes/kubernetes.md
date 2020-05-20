@@ -627,6 +627,46 @@ There is a few ways to make a service accessible externally:
 
 * Creating an Ingress resource, a radically different mechanism for exposing multiple services through a single IP address - It operates at the HTTP level and can thus offer more features than layer 4 services can.
 
+#### Using a NodePort Service
+
+By creating a NodePort service, you make Kubernetes reserve a port on all its nodes (the same port number is used across all of them) and forward incoming connections to the pods that are part of the service. This is similar to a regular service(ClusterIp), but a NodePort service can be accessed not only through the service's internal cluster IP, but also through any node's IP and the reserved node port.
+
+Example of a NodePort definition.
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubia-nodeport
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 8080
+    nodePort: 30123
+  selector:
+    app: kubia
+```
+
+#### Loadbalancer
+
+If your Kubernetes cluster can provision a LoadBalancer this can be used to connect to the Nodes. The benefit of the LoadBalancer is that if you're using NodePort and the node you're connecting to goes down, then you won't be able to access the service. If you instead use a LoadBalancer then you can still access the services even if the node goes down.
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubia-loadbalancer
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  targetPort: 8080
+  selector:
+    app: kubia
+```
+
+If your Kubernetes cluster cannot provision a LoadBalancer a NodePort will be used instead.
 
 ## Thanks to
 
