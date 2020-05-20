@@ -246,6 +246,45 @@ spec:
 
 For pods running in production you should always define a liveness probe. Without one, Kubernetes has no way of knowing whether your app is still alive or not. As long as the process is still running, Kubernetes will consider the container to be healthy.
 
+### Replication Controller
+
+A ReplicationController is a Kubernetes resourcae that ensures itsa pods are always kept running. If the pod goes down for any reason, such as in the event of a node disappearing from the cluster or because the pod was evicted from the node, the ReplicationController notices the missing pod and creates a replacement pod. 
+
+A ReplicationController monitors the list of running pods and makes sure the actual number of pods of a "type" always matches the declared number. ReplicationControllers opertes on sets of pods that match a certain label selector.
+
+A ReplicationController has three esential partsas:
+
+* A label selector, which determines what pods are in the ReplicationControllers scope
+
+* A replica count, which specifies the desired number of pods that should be running
+
+* A pod template, which is used when creating new pod replicas
+
+All of the above can be modified at any time, but only changes to the replica count affect existing pods.
+
+Example of a ReplicationController definition file.
+
+```yaml
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: kubia
+spec:
+  replicas: 3
+  selector:
+    app: kubia
+  template:
+    metadata:
+      labels:
+        app: kubia
+    spec:
+      containers:
+      - name: kubia
+        image: runeanielsen/kubia
+        ports:
+        - containerPort: 8080
+```
+
 ## Thanks to
 
 * [Kubernetes in Action By Marko Luksa](https://www.manning.com/books/kubernetes-in-action-second-edition?a_aid=kubiaML)
