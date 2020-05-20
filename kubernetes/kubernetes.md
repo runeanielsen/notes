@@ -285,6 +285,34 @@ spec:
         - containerPort: 8080
 ```
 
+To scale an Replication Controller the following command can be used
+
+```sh
+kubectl scale rc kubia --replicas=20
+```
+
+It is also possible to increase the amount of replicas by editing the Replication Controller using the 'edit' command and increase the replicas in the file.
+
+```sh
+kubectl edit rc kubia
+```
+
+Anoter way is to increase the replication amount in the yaml file and apply the changes.
+
+```sh
+kubectl apply -f my-rc.yaml
+```
+
+#### Deleting a Replication Controller
+
+When you delete a Replication Controller through 'kubectl delete', the pods are also deleted. But because pods are created by a Replication Controller aren't an integral part of the ReplicationController, and are only managed by it, you can delete only the Replication Controller and leave the pods running.
+
+This can be done by using the 'cascade' flag and setting it to false.
+
+```sh
+kubectl delete rc kubia --cascade=false
+```
+
 ## Thanks to
 
 * [Kubernetes in Action By Marko Luksa](https://www.manning.com/books/kubernetes-in-action-second-edition?a_aid=kubiaML)
