@@ -49,9 +49,13 @@ To run an application in Kubernetes you need to package it up into one or more c
 The description includes
 
 * Container image or images that contain your application components.
+
 * How those components are related to each other.
+
 * Which ones need to run on the same nodes and which don't. 
-*For each component, you can specify how many replicas you want to run. Additionally, the description also includes which of those components provide a service to either internal or external client and should be exposed through a single IP address and made discoverable to the other components. 
+
+* For each component, you can specify how many replicas you want to run. Additionally, the description also includes which of those components provide a service to either internal or external client and should be exposed through a single IP address and made discoverable to the other components. 
+
 * Which components that should provide a service to internal or external clients and should be exposed through a single IP address and made discoverable to other components. 
 
 ## Description
@@ -91,7 +95,7 @@ To access a pod from the outside a service object is used. A service of type Loa
 
 ### Pod Network
 
-All pods in a Kubernetes cluster reside in a single flat, shared, netowrk-address space, which means every pod can access every other pod at the other pod's IP address. No netwrosk address translation gateways exist between them. When two pods send networks packets between each other, they'll each see the actual IP address of the other as the source IP in the packet.
+All pods in a Kubernetes cluster reside in a single flat, shared, network-address space, which means every pod can access every other pod at the other pod's IP address. No network address translation gateways exist between them. When two pods send network packets between each other, they'll each see the actual IP address of the other as the source IP in the packet.
 
 This means that communication between pods is always simple. The communication is much like computers on a LAN. Like a computer on a LAN, each pod gets its own IP address and is accessible from all other pods through this network established specifically for pods.
 
