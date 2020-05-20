@@ -211,6 +211,40 @@ By deleting a namespace all resources in that namespace will also be deleted.
 kubectl delete ns custom-namespace
 ```
 
+## Replication Controller & Deployments
+
+In the real world you almost never deploy pods directly. Instead you create resources of type Replication Controller and Deployment to handle the pods. The reason for this is that if a node dies and for example a pod is created directly, then the pod wont get restarted but if it is managed by a replication controller the pod will be spun up on another available node.
+
+### Liveness Probe
+
+Kubernetes checks if a pod is alive by using a liveness probe for each container in the pods specification. Kubernetes will periodically run the probe and restart the probe if the probe fails.
+
+Kubernetes can probe a container using one of the three mechanisms:
+
+* An HTTP GET probe performs an HTTP GET request on the containers IP address, a port and path you specify. If the response does not represent an HTTP error the probe is considered successful.
+
+* A TCP Socket probe tries to open a TCP connection to the specified port of the container. If the connection is established successfully, the probe is successful.
+
+* An Exec probe executes an arbitrary command inside the container and checks the commands exit status code. If the status code is 0, the probe is successful.
+
+Adding a liveness probe to a pod
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kubia-liveness
+spec:
+  containers:
+  -  image: runeanielsen/kubia
+  name: kubia
+  livenessProbe:
+    httpGet:
+      path: /
+      port: 8080
+```
+
+For pods running in production you should always define a liveness probe. Without one, Kubernetes has no way of knowing whether your app is still alive or not. As long as the process is still running, Kubernetes will consider the container to be healthy.
 
 ## Thanks to
 
