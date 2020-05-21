@@ -690,6 +690,118 @@ A wide variety of volume types is available. Several are generic, while others a
 
 * persistentVolumeClaim - A way to use a pre- or dynamically provisioned persistent storage.
 
+### emptyDir
+
+The simplest volume type is the emptyDir volume. As the name suggests, the volume starts out as an empty directory. The app inside the pod can then write any files it needs to it. Because the volumes lifetime is tied to that of the pod, the volumes contents are lost when the pod is deleted. An emptyDir volume is very useful for sharing files between containers running in the same pod.
+
+Example of a pod with two containers sharing the same volume.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fortune
+spec:
+  containers:
+  - image: runeanielsen/fortune
+    name: html-generator
+    volumeMounts:
+    - name: html
+      mountPath: /var/htdocs
+  - image: nginx:alpine
+    name: web-server
+    volumeMounts:
+    - name: html
+      mountPath: /usr/share/nginx/html
+      readOnly: true
+    ports:
+    - containerPort: 80
+      protocol: TCP
+    volumes:
+    - name: html
+      emptyDir: {}
+```
+
+### hostPath
+
+A hostPath volume points to a specific file or directory on the node's filesystem. Pods running on the same node and using the same path in their hostPath volume see the same files.
+
+hostPath is a persistent volume. hostPAth volumes are used if you need to read or write system files on the node. Never use them to persist data across pods.
+
+### PersistentVolumes and PersistentVolumeClaims
+
+The enable apps to request storage in a Kubernetes cluster without having to deal with infrastructure specifcs, two new resources were introduced. They are PersistentVolumes and PersistentVolumeClaims. 
+
+Instead of the developer adding a technology-specific volume to their pod, it's the cluster administrator who sets up the underlying storage and then registers it in Kubernetes by creating a PersistentVolume resource through the Kubernetes API server. When creating the PersistentVolume, the admin specifies its size and access modes it supports.
+
+When a cluster user needs to use a persistent storage in one of their pods, they first create a PersistentVolumeClaim manifest, specifying the minimum size and the access mode they require. The User then submits the PersistentVolumeClaim manifest to the Kubernetes API server, and Kubernetes finds the appropriate PersistentVolume and binds the volume to the claim.
+
+Example of PersistentVolume using gcePersistentDisk
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongodb-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Retain
+  gcePersistentDisk:
+    pdName: mongodb
+    fsType: ext4
+```
+
+### PersistentVolumeClaim
+
+To use a PersistentVolume you need to claim it first. Claiming a PersistentVolumeClaim is a completely seperate process from creating a pod, because you want the same PersistentVolumeClaim to stay available even if the pod is rescheduled. 
+
+Example of PersistentVolumeClaim
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc
+spec:
+  resource:
+    requests:
+      storage: 1Gi
+    accessModes:
+    - ReadWriteOnce
+    storageClassName: ""
+```
+
+#### Using a PersistentVolumeClaim in a Pod
+
+To use a PersistentVolumeClaim inside a pod, you need to reference it by name inside the pod's volume. 
+
+Example:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mongodb
+spec:
+  containers:
+  - image: mongo
+    name: mongodb
+    volumeMounts:
+    - name: mongodb
+      mountPath: /data/db
+    ports:
+    - containerPort: 27017
+      protocol: TCP
+  volumes:
+  - name: mongodb-data
+    persistentVolumeClaim:
+      claimName: mongodb-pvc
+```
+
 ## Thanks to
 
 * [Kubernetes in Action By Marko Luksa](https://www.manning.com/books/kubernetes-in-action-second-edition?a_aid=kubiaML)
