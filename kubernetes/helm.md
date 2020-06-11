@@ -1,4 +1,4 @@
-# Helm
+# Helm 3
 
 Helm is a package manager for Kubernetes In Helm packages are called 'Charts'.
 
@@ -56,9 +56,24 @@ type: application
 
 ## Release
 
+The chart is the definition of the application and the release is an instance of the chart running in a Kubernetes cluster.
 
 ### Release revision
 
 When you update a Kubernetes resource inside of a Helm Chart you don't create a new release, but you make a new revision of the release. 
 
 Release revision should not be confused with Chart version. The Charts version refers to a change in the Charts file structure, meaning a change in the application definition. An example could be new Kubernetes resources being added to the Chart.
+
+## Helm primary commands
+
+| Action                         | Command                            |
+| -----------                    | -----------                        |
+| Install a Release              | helm install [release] [chart]     |
+| Upgrade a Releae revision      | helm upgrade [release] [chart]     |
+| Rollback to a Release revision | helm rollback [release] [revision] |
+| Print Release history          | helm history [release]             |
+| Display Release status         | helm status [release]              |
+| Show details of a Release      | helm get all [release]             |
+| Uninstall a Releaser           | helm unisntall [release]           |
+| List Releases                  | helm list                          |
+
