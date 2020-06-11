@@ -83,28 +83,28 @@ When you combine a chart of multiple other charts that is called an Umbrella Cha
 
 An example of the structure of an umbrella chart containg three charts.
 
-**my-umbrella-chart**
--- **charts**
-    -- **frontend**
-    -- Chart.yaml
-        -- *templates*
-            -- ConfigMap.yaml
-            -- Ingress.yaml
-            -- Pod.yaml
-            -- Service.yaml
-    -- **backend**
-    -- Chart.yaml
-        -- *templates*
-            -- ConfigMap.yaml
-            -- Pod.yaml
-            -- Service.yaml
-    -- **database**
-    -- Chart.yaml
-        -- *templates*
-            -- ConfigMap.yaml
-            -- Ingress.yaml
-            -- Pod.yaml
-            -- Secret.yaml
-            -- PVC.yaml
-            -- PV.yaml
--- Chart.yaml
+* **my-umbrella-chart**
+  * **charts**
+    * **frontend**
+    * Chart.yaml
+        * **templates**
+            * ConfigMap.yaml
+            * Ingress.yaml
+            * Pod.yaml
+            * Service.yaml
+    * **backend**
+    * Chart.yaml
+        * *templates*
+            * ConfigMap.yaml
+            * Pod.yaml
+            * Service.yaml
+    * **database**
+    * Chart.yaml
+        * **templates**
+            * ConfigMap.yaml
+            * Ingress.yaml
+            * Pod.yaml
+            * Secret.yaml
+            * PVC.yaml
+            * PV.yaml
+  * Chart.yaml
