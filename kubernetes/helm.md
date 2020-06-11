@@ -27,3 +27,7 @@ Helm tracks the status of the chart using what is called 'Three-Way (merge patch
 Helm does this by comparing the three manifests, the old chart, the new chart and live-state. Helm then creates a patch that merges the state. 
 
 In a scenario where a Kubernetes resource is updated using a tool other than Helm, Helm will compare the three states and keep both the changes that was made in Helm and the change that was made using the other tool, as long as they don't conflict with eachother.
+
+## Namespaces
+
+By default Helm installs Kubernetes resources inside the default namespace, if specified it can install resources in a specific namespace. The history secrets are stored in the namespace that is specified using the Helm install command.
