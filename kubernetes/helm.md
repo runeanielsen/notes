@@ -76,3 +76,35 @@ Release revision should not be confused with Chart version. The Charts version r
 | Show details of a Release      | helm get all [release]             |
 | Uninstall a Releaser           | helm uninstall [release]           |
 | List Releases                  | helm list                          |
+
+## Umbrella Chart
+
+When you combine a chart of multiple other charts that is called an Umbrella Chart. 
+
+An example of the structure of an umbrella chart containg three charts.
+
+**my-umbrella-chart**
+-- **charts**
+    -- **frontend**
+    -- Chart.yaml
+        -- *templates*
+            -- ConfigMap.yaml
+            -- Ingress.yaml
+            -- Pod.yaml
+            -- Service.yaml
+    -- **backend**
+    -- Chart.yaml
+        -- *templates*
+            -- ConfigMap.yaml
+            -- Pod.yaml
+            -- Service.yaml
+    -- **database**
+    -- Chart.yaml
+        -- *templates*
+            -- ConfigMap.yaml
+            -- Ingress.yaml
+            -- Pod.yaml
+            -- Secret.yaml
+            -- PVC.yaml
+            -- PV.yaml
+-- Chart.yaml
