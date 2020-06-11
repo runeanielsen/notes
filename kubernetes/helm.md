@@ -27,3 +27,35 @@ Helm tracks the status of the chart using what is called 'Three-Way (merge patch
 Helm does this by comparing the three manifests, the old chart, the new chart and live-state. Helm then creates a patch that merges the state. 
 
 In a scenario where a Kubernetes resource is updated using a tool other than Helm, Helm will compare the three states and keep both the changes that was made in Helm and the change that was made using the other tool, as long as they don't conflict with eachother.
+
+## Helm Chart structure
+
+The simplest Helm Chart structure is the following
+
+**chart**
+-- Chart.yaml
+-- **templates**
+    -- my-resource-one.yaml
+    -- my-resource-two.yaml
+    -- my-resource-three.yaml
+
+### Example of a Chart.yaml file
+
+```yaml
+apiVersion: v2
+name: my-chart-name
+appVersion: "1.0"
+description: A Helm chart for my-chart-name 1.0
+version: 0.1.0
+type: application
+```
+
+## Release
+
+
+
+### Release revision
+
+When you update a Kubernetes resource inside of a Helm Chart you don't create a new release, but you make a new revision of the release. 
+
+Release revision should not be confused with Chart version. The Charts version refers to a change in the Charts file structure, meaning a change in the application definition. An example could be new Kubernetes resources being added to the Chart.
