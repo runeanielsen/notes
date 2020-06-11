@@ -86,20 +86,20 @@ An example of the structure of an umbrella chart containg three charts.
 * **my-umbrella-chart**
   * **charts**
     * **frontend**
-    * Chart.yaml
+      * Chart.yaml
         * **templates**
             * ConfigMap.yaml
             * Ingress.yaml
             * Pod.yaml
             * Service.yaml
     * **backend**
-    * Chart.yaml
+      * Chart.yaml
         * *templates*
             * ConfigMap.yaml
             * Pod.yaml
             * Service.yaml
     * **database**
-    * Chart.yaml
+      * Chart.yaml
         * **templates**
             * ConfigMap.yaml
             * Ingress.yaml
