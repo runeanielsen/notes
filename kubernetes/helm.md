@@ -74,6 +74,5 @@ Release revision should not be confused with Chart version. The Charts version r
 | Print Release history          | helm history [release]             |
 | Display Release status         | helm status [release]              |
 | Show details of a Release      | helm get all [release]             |
-| Uninstall a Releaser           | helm unisntall [release]           |
+| Uninstall a Releaser           | helm uninstall [release]           |
 | List Releases                  | helm list                          |
-
