@@ -31,3 +31,34 @@ In a scenario where a Kubernetes resource is updated using a tool other than Hel
 ## Namespaces
 
 By default Helm installs Kubernetes resources inside the default namespace, if specified it can install resources in a specific namespace. The history secrets are stored in the namespace that is specified using the Helm install command.
+
+## Helm Chart structure
+
+The simplest Helm Chart structure is the following
+
+**chart**
+-- Chart.yaml
+-- **templates**
+    -- my-resource-one.yaml
+    -- my-resource-two.yaml
+    -- my-resource-three.yaml
+
+### Example of a Chart.yaml file
+
+```yaml
+apiVersion: v2
+name: my-chart-name
+appVersion: "1.0"
+description: A Helm chart for my-chart-name 1.0
+version: 0.1.0
+type: application
+```
+
+## Release
+
+
+### Release revision
+
+When you update a Kubernetes resource inside of a Helm Chart you don't create a new release, but you make a new revision of the release. 
+
+Release revision should not be confused with Chart version. The Charts version refers to a change in the Charts file structure, meaning a change in the application definition. An example could be new Kubernetes resources being added to the Chart.
