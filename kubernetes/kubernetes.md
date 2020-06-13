@@ -34,7 +34,7 @@ The control plane is what controls the cluster and makes it function. It consist
 
 ## The Nodes
 
-The worker nodes are the machines that run your containerized applications. The task of running , monitoring, and providing services to your applications is done by the following components:
+The worker nodes are the machines that run your containerized applications. The task of running, monitoring, and providing services to your applications is done by the following components:
 
 * Docker, rkt, or another container runtime, which runs your containers.
 
@@ -78,7 +78,6 @@ To allow clients to find containers that provide a specific service, you tell Ku
 
 The IP address of the service is always constant, even if nodes go down.
 
-
 ## Pods
 
 Kubernetes do not deal with individual containers directly. Instead, it uses the concept of multiple co-located containers. The collection of containers is called a Pod.
@@ -87,11 +86,9 @@ A pod is a group of one or more tightly related containers that will always run 
 
 All the containers in a pod will appear to be running on the same logical machine, whereas containers in other pods, even if they're running on the same worker node, will appear to be running on a different one.
 
-
 ### Access the Pod
 
 To access a pod from the outside a service object is used. A service of type LoadBalancer is used to expose the Pod to external clients otherwise by using a CluserIp service it can only be accessed from inside the cluster. By creating a LoadBalancer type service, an external load balancer will be created and you can connect to the pod through the load balancers public ip.
-
 
 ### Pod Network
 
@@ -165,7 +162,6 @@ kubectl get po -L cration_method,env
 ## Annotations
 
 Kubernetes resources can contain annotations. A annotation is a key-value pair, they're similar to labels, but aren't meant to hold identifying information. A annoation cannot be used to group resources but it is used for holding much bigger information and that information is maent to be used by tools. Certain annotations are automatically added to Kubernetes resources. A great use of annotations are to add descriptions for pods and other resources. 
-
 
 Example of adding a annotation to a pod.
 
