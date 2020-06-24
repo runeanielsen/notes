@@ -828,6 +828,30 @@ This makes it decoupled and isolated from the services you want to expose. It al
 
 The downside is that you need to configure an Ingress Controller for your cluster.
 
+Example of an Ingress Controller
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: example-ingress
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+        - path: /one
+          backend:
+            serviceName: service-one
+            servicePort: 5678
+        - path: /two
+          backend:
+            serviceName: service-two 
+            servicePort: 5678
+
+```
+
 ## Thanks to
 
 * [Kubernetes in Action By Marko Luksa](https://www.manning.com/books/kubernetes-in-action-second-edition?a_aid=kubiaML)
