@@ -828,7 +828,7 @@ This makes it decoupled and isolated from the services you want to expose. It al
 
 The downside is that you need to configure an Ingress Controller for your cluster.
 
-Example of an Ingress Controller
+Example of an Ingress resource
 
 ```yaml
 apiVersion: extensions/v1beta1
