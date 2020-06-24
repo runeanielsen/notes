@@ -798,7 +798,38 @@ spec:
       claimName: mongodb-pvc
 ```
 
+
+## Kubernetes Ingress
+
+In Kubernetes, an Ingress is an object that allows access to your Kubernetes services from outside the Kubernetes cluster. You configure access by creating a collection of rules that define which inbound connections reach which services.
+
+Ingress lets you consolidate your routing rules into a single resource. For example, you might want to send requests to example.com/api/v1 to an api-v1 service, and requests to example.com/api/v2/ to the api-v2 service. With an Ingress, you can easily set this up without creating a bunch of LoadBalancers or exposing each service on hte Node. 
+
+### Ingress vs LoadBalancer vs NodePort
+
+Ingress, Loadbalancer and NodePort all let you expose a service to external network requests. They let you send a reuqest from outside the Kubernetes cluster to a service inside the cluster. 
+
+#### NodePort
+Using a NodePort, Kubernetes will then allocate a specific port on each Node to that service, and any request to your cluster on that port gets forwarded to the service. NodePorts are easy to setup, but are not very robust. You don't know what port your service is going to be allocated, and the port might get re-allocated at some point. 
+
+#### LoadBalancer
+
+LoadBalancer needs to have external load balancer functionality in the cluster. The external load balancer is typically implemented by a cloud provider.
+
+Depending on the provoider you will get different types of load balancers. GKE creates a Network Load Balancer with an IP address that you can use to access your service. 
+
+Every time you want to expose a service to the outside world, you have to create a new LoadBalancer and get an IP address.
+
+#### Ingress
+
+Ingress is different from NodePort and LoadBalancer, because you don't delcare the type in the service definition. Ingress, on the other hand, is a completely indepdendent resource to your service. You declare, create and destroy it seperately to your serivces.
+
+This makes it decoupled and isolated from the services you want to expose. It also helps you to consolidate routing rules into one place.
+
+The downside is that you need to configure an Ingress Controller for your cluster.
+
 ## Thanks to
 
 * [Kubernetes in Action By Marko Luksa](https://www.manning.com/books/kubernetes-in-action-second-edition?a_aid=kubiaML)
 * [Getting Started with Kubernetes By Nigel Poulton](https://www.pluralsight.com/courses/getting-started-kubernetes)
+* [Kubernetes App Development By Matthew Palmer](https://matthewpalmer.net/kubernetes-app-developer/kubernetes-book.html#purchase-the-ebook)
