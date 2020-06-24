@@ -112,6 +112,23 @@ An example of the structure of an umbrella chart containg three charts.
 
 ## Helm Templates
 
+Helm uses the [Go-lang template engine](https://golang.org/pkg/text/template/).
+
+## Dependencies
+
+Helm comes with an automatic way to handle dependencies between Charts. The dependencies are managed in the *Chart.yaml* file under a property named *dependencies*.
+
+Example of depenendecies in a *Chart.yaml* file
+
+```yaml
+dependencies:
+  - name: stable/janusgraph
+    version: ~1.2.0
+    repository: https://kubernetes-charts.storage.googleapis.com
+  - name: stable/cassandra
+    version: ~1.0.0
+    repository: https://kubernetes-charts.storage.googleapis.com
+```
 
 
 ## Thanks to
