@@ -852,8 +852,20 @@ spec:
 
 ```
 
+##### Ingress Routing
+
+Allocating a random port or external load balancer is easy to setup, but has its issues. Defining many NodePort services creates a tangle of random ports. Defining many Load Balancer services leads to paying for more cloud resources than desired. It's not possible to avoid completely, but can be reduced, so you would only need to allocate one random port or one load balancer to expose many services.
+
+Ingress controllers are pods, just like any other application. They're part of the cluster and can see other pods. They're built using reverse proxies. There are different reverse proxies such as HAProxy Ingress Controller and NGINX Ingress controller. 
+
+The underlying proxy gives it Layer 7 routing and load balancing capabilities. Different proxies bing their own set of features to the table. For example, the HAProxy Ingress controller dosen't need to reload itself as often as the NGINX Ingress Controller, because it allocates slots for servers and fills them in runtime using its Runtime API.
+
+Being inside the cluster, Ingress Controller have the same properties of other pods. You need to expose them to the outside via a Service with a type of either NodePort or LoadBalancer. However, now you have a single entrypoint that all traffic goes through. The controller has the ability to inspect HTTP requests, direct a client to the correct pod based on characteristics it finds, such as the URL path or domain name.
+
+
 ## Thanks to
 
 * [Kubernetes in Action By Marko Luksa](https://www.manning.com/books/kubernetes-in-action-second-edition?a_aid=kubiaML)
 * [Getting Started with Kubernetes By Nigel Poulton](https://www.pluralsight.com/courses/getting-started-kubernetes)
 * [Kubernetes App Development By Matthew Palmer](https://matthewpalmer.net/kubernetes-app-developer/kubernetes-book.html#purchase-the-ebook)
+* [The New Stack - Ingress Routing](https://thenewstack.io/kubernetes-ingress-for-beginners/)
