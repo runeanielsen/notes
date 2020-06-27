@@ -29,5 +29,15 @@ When a message has not received a guarantee that is was written to the broker, t
 
 The guarantee might require filtering on the consumer end, but is one of the safest methods for delivery.
 
+### At most once
+
+Most once semantics are when a producer of messages might send a message once and never retries. In the event of a failure, the producer moves on and never attemps to send again. This can be useful for performance focused systems where it is okay to loss a few events if it means gaining performance by not having to wait for acknowledgements. 
+
+### Extactly once 
+
+Exactly once is a new addition to the Kafka feature set. In the context of a Kafka system, if a producer sends a message more than once, it would be delivered once to the end consumer. Exactly once semantics has touch points at all layers of Kafka, from producers, topics, brokers, and consumers. 
+
+
+## Thanks to
 
 [Kafka in Action By Dylan Scott](https://www.manning.com/books/kafka-in-action)
