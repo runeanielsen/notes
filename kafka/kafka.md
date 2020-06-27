@@ -1,10 +1,10 @@
 # Kafka
 
+## Introduction
+
 Kafka is changing the standard for data platforms. It is leading the way to move from Batch and ETL workflows tothe near real-time data feeds.
 
 Kafka is starting to make a push into microservice design. Kafka is touching a lot of the newest and most practical trends in today's IT fields.
-
-## Introduction
 
 Kafka provides the ability to publish/subscribe to records like a message queue, store records with fault-tolerance, and process streams as they occur.
 
@@ -13,7 +13,7 @@ Kafka has the concept of sending data from various sources of information this i
 Kafka acts as a middle ma to data coming into the system from producers and out of the system by consumers. The producer can send whatever messages it wants and have no idea about if anyone is subscribed.
 
 
-### Messaging options
+## Messaging options
 
 Kafka has various ways it can deliever messages. Kafka message delivery can take at lest the following three delivery methods.
 
@@ -21,7 +21,7 @@ Kafka has various ways it can deliever messages. Kafka message delivery can take
 * At most once semantics
 * Exactly once semantics
 
-#### At least once
+### At least once
 
 Kafka default guarantee is at least once semantics. This means that Kafka can be configured to allow for a producer of messages to send the same message more than once and have it written to the brokers.
 
