@@ -6,3 +6,4 @@ This repository contains notes on various topics
   * [Helm](https://github.com/runeanielsen/notes/tree/master/kubernetes/helm.md)
   * [Operator](https://github.com/runeanielsen/notes/tree/master/kubernetes/operator.md)
 * [Cassandra](https://github.com/runeanielsen/notes/tree/master/cassandra/cassandra.md)
+* [Kafka](https://github.com/runeanielsen/notes/tree/master/kafka/kafka.md)
