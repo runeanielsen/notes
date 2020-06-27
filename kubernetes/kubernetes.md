@@ -849,7 +849,6 @@ spec:
           backend:
             serviceName: service-two 
             servicePort: 5678
-
 ```
 
 ##### Ingress Routing
