@@ -38,6 +38,7 @@ Most once semantics are when a producer of messages might send a message once an
 Exactly once is a new addition to the Kafka feature set. In the context of a Kafka system, if a producer sends a message more than once, it would be delivered once to the end consumer. Exactly once semantics has touch points at all layers of Kafka, from producers, topics, brokers, and consumers. 
 
 
+
 ## Thanks to
 
 [Kafka in Action By Dylan Scott](https://www.manning.com/books/kafka-in-action)
