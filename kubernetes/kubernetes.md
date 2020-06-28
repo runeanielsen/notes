@@ -1,5 +1,7 @@
 # Kubernetes
 
+## Introduction
+
 Kubernetes is a software system that allows you to easily deploy and manage containerized applications on top of it. It relies on the features of Linux containers to run heterogenerous applications. 
 
 Deploying applications through Kubernetes is always the same, whether your cluster contains only a couple of nodes or thousands of them.
@@ -724,9 +726,32 @@ A hostPath volume points to a specific file or directory on the node's filesyste
 
 hostPath is a persistent volume. hostPAth volumes are used if you need to read or write system files on the node. Never use them to persist data across pods.
 
+Example of using hostPath for mongodb
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mongodb
+spec:
+  volumes:
+  - name: mongodb-data
+    hostPath:
+      path: /tmp/mongodb
+  containers:
+  - image: mongo
+    name: mongodb
+    volumeMounts:
+    - name: mongodb-data
+      mountPath: /data/db
+    ports:
+    - containerPort: 27017
+      protocol: TCP
+```
+
 ### PersistentVolumes and PersistentVolumeClaims
 
-The enable apps to request storage in a Kubernetes cluster without having to deal with infrastructure specifcs, two new resources were introduced. They are PersistentVolumes and PersistentVolumeClaims. 
+The enable apps to request storage in a Kubernetes cluster without having to deal with infrastructure specifics, two new resources were introduced. They are PersistentVolumes and PersistentVolumeClaims. 
 
 Instead of the developer adding a technology-specific volume to their pod, it's the cluster administrator who sets up the underlying storage and then registers it in Kubernetes by creating a PersistentVolume resource through the Kubernetes API server. When creating the PersistentVolume, the admin specifies its size and access modes it supports.
 
@@ -810,6 +835,7 @@ Ingress lets you consolidate your routing rules into a single resource. For exam
 Ingress, Loadbalancer and NodePort all let you expose a service to external network requests. They let you send a reuqest from outside the Kubernetes cluster to a service inside the cluster. 
 
 #### NodePort
+
 Using a NodePort, Kubernetes will then allocate a specific port on each Node to that service, and any request to your cluster on that port gets forwarded to the service. NodePorts are easy to setup, but are not very robust. You don't know what port your service is going to be allocated, and the port might get re-allocated at some point. 
 
 #### LoadBalancer
