@@ -12,3 +12,18 @@ Elixir empowers developers by providing macros. Elixir code is nothing more than
 
 *** Erlang VM
 In the Erlang VM everything runs in tiny concurrent processes, each with its own state. All communication happens by message-passing, exchanging messages between differnet machines on the same network transparently by the VM, making it a perfect environment for building distributed software.
+
+** Functions are data transformers
+Elixir lets us solve problems in the same way that Unix shell does. Rather than command-line utilities, we have functions. These functions we can string together as we please. The smaller and focused they are, the easier they're to reuse and combine.
+
+If we want, we can make these functions run in parallel, Elixir has a simple but powerful mechanism for passing messages between them. This mechanism provides the potential to run millions of them on a single machine and have hundreds of these machines inter-operating.
+
+Bruce Tate commented on this paragraph with this thought:
+#+begin_quote
+Most programmers treat threads and processes as a necessary evil; Elixir developers feel they are an important simplification.
+#+end_quote
+
+** Compile and Run
+Elixir files will typically have the extension `.ex` or `.exs`. This is a convention--files ending in `.ex` are intended to be compiled into byte codes and then run, whereas those ending in `.exs.` are more like programs in scripting languages and are effectively interpreted at the source level.
+
+When you write tests for Elixir programs, you'll see that the application files have `.ex` extensions, whereas the tests have `.exs` because we don't need to keep compiled versions of the tests lying around.
