@@ -20,10 +20,82 @@ If we want, we can make these functions run in parallel, Elixir has a simple but
 
 Bruce Tate commented on this paragraph with this thought:
 #+begin_quote
-Most programmers treat threads and processes as a necessary evil; Elixir developers feel they are an important simplification.
+Most programmers treat threads and processes as a necessary evil; Elixir developers feel they are an important simplification. --- Bruce Tate
 #+end_quote
 
 ** Compile and Run
-Elixir files will typically have the extension `.ex` or `.exs`. This is a convention--files ending in `.ex` are intended to be compiled into byte codes and then run, whereas those ending in `.exs.` are more like programs in scripting languages and are effectively interpreted at the source level.
+Elixir files will typically have the extension =.ex= or =.exs=. This is a convention--files ending in '.ex' are intended to be compiled into byte codes and then run, whereas those ending in =.exs.= are more like programs in scripting languages and are effectively interpreted at the source level.
 
-When you write tests for Elixir programs, you'll see that the application files have `.ex` extensions, whereas the tests have `.exs` because we don't need to keep compiled versions of the tests lying around.
+When you write tests for Elixir programs, you'll see that the application files have =.ex= extensions, whereas the tests have =.exs= because we don't need to keep compiled versions of the tests lying around.
+
+** Assignment
+In Elixir, the equals sign is not an assignment. Instead it's like an assertion. It succeeds if Elixir can find a way of making the left-hand side equal the right-hand side. Elixir calls the ~=~ symbol the match operator.
+
+*** Elixir can match true by binding the variable
+In this case, the left-hand side is a variable and the right-hand side is an integer literal, so Elixir can make the match true by binding the variable ~a~ to value ~1~.
+
+#+begin_src iex
+iex> a = 1
+1
+iex> a + 3
+4
+#+end_src
+
+**** Example of incorrect match
+The second line of code, ~1 = a~. It's another match, and it passes. The variable =a= already has the value =1= (it was set in the first line), so what's on the left of the equals sign is the same as what's on the right, and the match succeeds. But the third line, ~2 = a~, raises an error. You might expect it to assign =2= to =a=, as that would make the match succeed, but Elixir will only change the variable of a variable on the left side of an equals sign and replace it with the =value= on the right side. The failing line of code is the same as ~2 = 1~, which causes an error.
+
+#+begin_src iex
+iex> a = 1
+1
+iex> 1 = 1
+1
+iex> 2 = a
+(MatchError) no match of right hand side value: 1
+#+end_src
+
+**** More complex matches
+
+Elixir looks for a way to make the value of the left side the same as the value of the right side. The left side is a list containing three variables, and the right is a list of three values, so the two sides could be made the same by setting the variables to the corresponding values.
+
+Elixir calls this process /pattern matching/. A pattern (the left side) is matched if the values (the right side) have the same structure and if each term in the pattern can be matched to the corresponding term in the values. A literal value in the pattern matches that exact value, and a variable in the pattern matches by taking on the corresponding value.
+
+#+begin_src iex
+iex> list = [ 1, 2, 3 ]
+[1, 2, 3]
+iex> [a, b, c ] = list
+[1, 2, 3 ]
+iex> a
+1
+iex> b
+2
+iex> c
+3
+#+end_src
+
+Another example.
+
+#+begin_src iex
+iex> list = [1, 2, [3, 4, 5]]
+[1, 2, [3, 4, 5]]
+iex> [a, b, c] = list
+[1, 2, [3, 4 ,5]]
+iex> a
+1
+iex> b
+2
+iex> c
+[3, 4, 5]
+#+end_src
+
+Example with a pattern containing some values and variables
+
+#+begin_src iex
+iex> list = [1, 2, 3]
+[1, 2, 3]
+iex> [a, 2, b] = list
+[1, 2, 3]
+iex> a
+a
+iex> b
+3
+#+end_src
