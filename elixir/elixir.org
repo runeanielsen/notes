@@ -1,0 +1,14 @@
+* Elixir
+** Introduction
+Elixir is a pragmatic approach to functional programming. It values functional foundations and it focuses on developer productivity.
+
+Concurrency is the backbone of Elixir software. Elixir is made to free you from antiquated concurrency mechanisms.
+
+*** Functional language
+A functional language lets us think in terms of functions that transform data. This transformation never mutates data. Instead, each applicaiton of a function potentially creates a new, fresh version of the data. This reduces the need for data-synchronization mechanisms.
+
+*** Macros
+Elixir empowers developers by providing macros. Elixir code is nothing more than data, and therefore can be manipulated via macros like any other value in the language.
+
+*** Erlang VM
+In the Erlang VM everything runs in tiny concurrent processes, each with its own state. All communication happens by message-passing, exchanging messages between differnet machines on the same network transparently by the VM, making it a perfect environment for building distributed software.
