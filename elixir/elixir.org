@@ -448,7 +448,7 @@ iex> colors.green
 
 You'll get a =KeyError= if there's no matching key when you use the dot notation.
 
-**** Binaries
+*** Binaries
 Sometimes you need to access data as a sequence of bits and bytes. For example, the headers in JPEG and MP3 files where a single byte may encode two or three separate values.
 
 Elixir supports this with the binary data type. Binary literals are enclosed between << and >>.
@@ -464,7 +464,7 @@ iex> byte_size bin
 
 Binaries are important because Elixir uses them to represent =UTF= strings. They're arcane because, at least initially you're unlikely to use them directly.
 
-**** Dates and Times
+*** Dates and Times
 The =Date= type holds a year, a month, and a reference to the ruling calendar.
 
 #+begin_src iex
@@ -484,7 +484,7 @@ iex> date.add(d1, 7)
 
 The sequences =~D= are examples of Elixir's =sigils= . They are a way of constructing literal values.
 
-**** Names, source files, conventions, operators
+*** Names, source files, conventions, operators
 Elixir identifiers must start with a letter or underscore, optionally followed by letters, digits, and underscores. Examples of variables
 
 - ~name~
@@ -548,6 +548,48 @@ list1 -- list2     # removes elements of list 2 from a copy of list 1
 #+begin_src elixir
 a in enum # Tests if a is included in enum
 #+end_src
+
+*** Variable scope
+Elixir is =lexically= scoped. The basic unit of scoping is the function body. Variables defined in a function are local to that function. In addition, modules define a scope for local variables, but these are accessible only at the top level of that module, and not in functions defined in the module.
+
+**** Do-block scope
+Most languages let you group together multiple code statements and treat them as a single code block. Often languages use braces for this. Elixir doesn't really have blocks like in for-example =C=, but it does have ways of grouping expressions together. The most common of these is the ~do~ block:
+
+#+begin_src elixir
+line_no = 50
+
+if (line_no == 50) do
+    IO.puts "new-page\f"
+    line_no = 0
+end
+#+end_src
+
+However, Elixir, thinks this is a risky way to write code. In particular, it's easy to get to initialize ~line_no~ outside the block, but to then rely on it having a value after the block. For that reason, Elixir will warn you.
+
+**** The with Expression
+The ~with~ expression serves double duty. First, it allows you to define a local scope for variables. If you need a couple of temporary variables when calculating something, and don't want those variables to leak out into the wiser scope, use ~with~. Second,  if gives you some control over pattern-matching failures.
+
+#+begin_src elixir
+content = "Now is the time"
+
+lp =
+  with {:ok, file} = File.open("/etc/passwd"),
+        content = IO.read(file, :all),
+        :ok = File.close(file),
+        [_, uid, gid] = Regex.run(~r/^_lp:.*?:(\d+):(\d+):/m, content) do
+    "Group: #{gid}, User: #{uid}"
+  end
+
+# => Group: 26, User: 26
+IO.puts(lp)
+# => Now is the time
+IO.puts(content)
+#+end_src
+
+The ~with~ expression lets us work with what are effectively temporary variables as we open the file, read its content, close it, and search for the line we want. The value of the ~with~ is the value of its ~do~ parameter.
+
+The inner variable ~contet~ is local to the ~with~, and does not affect the variable in the outer scope.
+
 
 ** Thanks to
 [[https://pragprog.com/titles/elixir16/programming-elixir-1-6/][Programming Elixir 1.6]]
