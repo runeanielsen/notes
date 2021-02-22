@@ -54,7 +54,6 @@ iex> 2 = a
 #+end_src
 
 **** More complex matches
-
 Elixir looks for a way to make the value of the left side the same as the value of the right side. The left side is a list containing three variables, and the right is a list of three values, so the two sides could be made the same by setting the variables to the corresponding values.
 
 Elixir calls this process /pattern matching/. A pattern (the left side) is matched if the values (the right side) have the same structure and if each term in the pattern can be matched to the corresponding term in the values. A literal value in the pattern matches that exact value, and a variable in the pattern matches by taking on the corresponding value.
@@ -98,4 +97,53 @@ iex> a
 a
 iex> b
 3
+#+end_src
+
+**** Ignore a Value with _ (Underscore)
+If we don't need to capture a value doing a match, we could use the special variable =_=. This acts like a variable but immediately discards any value given to it in a pattern match.
+
+#+begin_src iex
+iex> [1, _, _] = [ 1, 2 ,3]
+[1, 2, 3]
+iex> [1, _, _] = [1, "cat", "dog"]
+[1, "cat", "dog"]
+#+end_src
+
+**** Variables bind once (per Match)
+Once a variable has been bound to a value in matching process, it keeps that value for the remainder of the match.
+
+#+begin_src iex
+iex> [a, a] = [1, 1]
+[1, 1]
+iex> a
+1
+iex> [b, b] = [1, 2]
+(MatchError) no match of right hand side vlaue: [1, 2]
+#+end_src
+
+- The first expression in this example succeeds because =a= is initially matched with the first =1= on the right side.
+- the second expression, the first =b= matches the =1=. But the second =b= corresponds to the value 2 on the right. =b= cannot have two different values, and so the match fails.
+
+If you want to force Elixir to use the existing value of the variable in the pattern, then prefix it with =^= (a caret). In Elixir we call this the /pin operator/.
+
+#+begin_src iex
+iex> a = 1
+1
+iex> a = 2
+2
+iex> ^a = 1
+(MatchError) no match of right hand side value: 1
+#+end_src
+
+This also works if the variable is a component of a pattern:
+
+#+begin_src iex
+iex> a = 1
+1
+iex> [^a, 2, 3] = [1, 2, 3]
+[1, 2, 3]
+iex> a = 2
+2
+iex> [^a, 2] = [1, 2]
+(MatchError) no match of right hand side value: [1, 2]
 #+end_src
