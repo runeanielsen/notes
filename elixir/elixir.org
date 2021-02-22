@@ -418,6 +418,35 @@ Why do we have both maps and keyword lists? Maps allow only one entry for a part
 
 In general, use keyword lists for things such as command-line parameters and passing around options, and use maps when you want an associative array.
 
+***** Accessing a map
+You extract values form a map using the key. The square-bracket syntax works with all maps:
+
+#+begin_src iex
+iex> states = %{"AL" => "Alabama", "WI" => "Wisconsin"}
+%{"AL" => "Alabama", "WI" => "Wisconsin"}
+iex> states["AL"]
+"Alabama"
+iex> states["TX"]
+nil
+
+iex> response_types = %{ {:error, :enoent} => fatal, {:error, :busy} => retry}
+%{ {:error, :enoent} => fatal, {:error, :busy} => retry}
+iex> response_types[{:error,:busy}]
+:retry
+#+end_src
+
+If the keys are atoms, you can also use a dot notation:
+
+#+begin_src iex
+iex> colors = %{red: 0xff0000, green: 0x00ff00, blue: 0x0000ff}
+%{blue: 255, green: 65280, red: 16711680}
+iex> colors[:red]
+16711680
+iex> colors.green
+65280
+#+end_src
+
+You'll get a =KeyError= if there's no matching key when you use the dot notation.
 
 ** Thanks to
 [[https://pragprog.com/titles/elixir16/programming-elixir-1-6/][Programming Elixir 1.6]]
