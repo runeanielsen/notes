@@ -536,7 +536,6 @@ a && b    # b if a is truthy; otherwise a
 ****** Arithmetic operators
 ~+-*/ div rem~. Integer division yields a floating-point result Use ~div(a,b)~ to get an integer. ~rem~ is the =remainder operator=. It is called a function ~rem(11,3) => 2~. It differs from normal modulo operations in that the result will have the same sign as a function first argument.
 
-
 ****** Join operators
 #+begin_src elixir
 binary1 <> binary2 # concatenates two binaries
@@ -589,7 +588,6 @@ IO.puts(content)
 The ~with~ expression lets us work with what are effectively temporary variables as we open the file, read its content, close it, and search for the line we want. The value of the ~with~ is the value of its ~do~ parameter.
 
 The inner variable ~contet~ is local to the ~with~, and does not affect the variable in the outer scope.
-
 
 ** Thanks to
 [[https://pragprog.com/titles/elixir16/programming-elixir-1-6/][Programming Elixir 1.6]]
