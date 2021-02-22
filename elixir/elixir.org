@@ -392,6 +392,31 @@ iex> {1, fred: 1, dave: 2}
 {1, [fred: 1, dave: 2]}
 #+end_src
 
+**** Maps
+A map is a collection of key/value pairs. Map literal looks like this:
+
+#+begin_src elixir
+%{key => value, key => value}
+#+end_src
+
+Examples of maps:
+
+#+begin_src iex
+iex> state = %{"AL" => "Alabama", "WI" => "Wisconsin"}
+%{"AL" => "Alabama", "WI" => "Wisconsin"}
+
+iex> responses = %{{:error, :enoent} => :fatal, {:error, :busy} => :retry}
+%{{:error, :busy} => :retry, {:error, :enoent} => :fatal}
+
+iex> colors = %{:red => 0xff0000, :green => 0x00ff00, :blue => 0x0000ff}
+%{blue: 255, green: 65280, red: 16711680}
+#+end_src
+
+In the first case the keys are strings, in the second they're tuples, and in the third they're atoms. Although typically all the keys in a map are the same type, that isn't required.
+
+Why do we have both maps and keyword lists? Maps allow only one entry for a particular key, whereas keyword lists allow the key to be repeated. Maps are efficient (particularly as they grow), and they can be used in Elixir's pattern matching.
+
+In general, use keyword lists for things such as command-line parameters and passing around options, and use maps when you want an associative array.
 
 
 ** Thanks to
