@@ -206,5 +206,56 @@ In object-oriented languages you would most of the time solve it by saying ~name
 
 In a functional language, we always transform data. We never modify it in place.
 
+** Elixir basics
+Elixir's built-in types:
+
+- Value types:
+  - Arbitrary-sized integers
+  - Floating-point numbers
+  - Atoms
+  - Ranges
+  - Regular expressions
+- System types:
+  - PIDs and ports
+  - References
+- Collection types:
+  - Tuples
+  - Lists
+  - Maps
+  - Binaries
+
+Functions are a type too. They have their own chapter, following this one.
+
+You might be surprised that list doesn't include things such as strings and structures. Elixir has them, but they are built using the basic types from the list.
+
+There are some debate about whether regular expressions and ranges are value types. Technically they aren't - under the hood they are just structures. But its convenient to treat them as distinct types.
+
+*** Value types
+The value types in Elixir represent numbers, names, ranges, and regular expressions.
+
+**** Integers
+Integer literals can be written as decimal =1234=, hexadecimal =0xcafe=, octal =0o765=, and binary =0b1010=.
+
+Decimal numbers may contain underscores these are often used to separate groups of three groups of three digits when writing large numbers, so one million could be written ~1_000_000~.
+
+There is no fixed limit on the size of integers, their internal representation grows to fit their magnitude.
+
+**** Floating-point numbers
+Floating-point numbers are written using a decimal point. There must be at least one digit before and after the decimal point. An optional trailing exponent may be given. These are all valid floating-point literals:
+
+~1.0    0.2456    0.314159e1    314159.0e-5~
+
+Floats are IEEE 754 double precision, giving them about 16 digits of accuracy and a maximum exponent of around 10^308.
+
+**** Atoms
+=Atoms= are constants that represents something's name. We write them using a leading colon =:= which can be followed by an atom word or an Elixir operator. An atom word is a sequence of =UTF-8= letters (including combination-marks), digits, underscores, and at signs =@=. It may end with an exclamation point of a question mark. You can also create atoms containing arbitrary characters by enclosing the characters following the colon in double quotes. These are all atoms:
+
+~:fred    :is_binary?    :var@2    :<>    :===    :"func/3"    :"long john silver"~
+
+An atom's name is its value. Two atoms with the same name will always compare as equal, even if they were created by different applications on two computers separated by an ocean.
+
+**** Ranges
+~Ranges~ are represented as /start..end/, where =start= and =end= are integers.
+
 ** Thanks to
 [[https://pragprog.com/titles/elixir16/programming-elixir-1-6/][Programming Elixir 1.6]]
