@@ -149,4 +149,4 @@ iex> [^a, 2] = [1, 2]
 #+end_src
 
 ** Thanks to
-[[https:pragprog.com/titles/elixir16/programming-elixir-1-6/][Programming Elixir 1.6]]
+[[https://pragprog.com/titles/elixir16/programming-elixir-1-6/][Programming Elixir 1.6]]
