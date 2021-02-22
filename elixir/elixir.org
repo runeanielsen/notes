@@ -147,3 +147,6 @@ iex> a = 2
 iex> [^a, 2] = [1, 2]
 (MatchError) no match of right hand side value: [1, 2]
 #+end_src
+
+** Thanks to
+[[https:pragprog.com/titles/elixir16/programming-elixir-1-6/][Programming Elixir 1.6]]
