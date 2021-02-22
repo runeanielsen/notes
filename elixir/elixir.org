@@ -448,5 +448,57 @@ iex> colors.green
 
 You'll get a =KeyError= if there's no matching key when you use the dot notation.
 
+**** Binaries
+Sometimes you need to access data as a sequence of bits and bytes. For example, the headers in JPEG and MP3 files where a single byte may encode two or three separate values.
+
+Elixir supports this with the binary data type. Binary literals are enclosed between << and >>.
+
+The basic syntax packs successive integers into bytes:
+
+#+begin_src iex
+iex> bin = <<1, 2>>
+<<1, 2>>
+iex> byte_size bin
+2
+#+end_src
+
+Binaries are important because Elixir uses them to represent =UTF= strings. They're arcane because, at least initially you're unlikely to use them directly.
+
+**** Dates and Times
+The =Date= type holds a year, a month, and a reference to the ruling calendar.
+
+#+begin_src iex
+iex> d1 = Date.new(2018, 12, 25)
+{:ok, ~D[2018-12-25]}
+iex> {:ok, d1} = Date.new(2018, 12, 25)
+{:ok, ~D[2018-12-25]}
+iex> d2 = ~D[2018-12-25]
+~D[2018-12-25]
+iex> d1 == d2
+true
+iex> Date.day_of_week(d1)
+2
+iex> date.add(d1, 7)
+~D[2019-01-01]
+#+end_src
+
+The sequences =~D= are examples of Elixir's =sigils= . They are a way of constructing literal values.
+
+**** Names, source files, conventions, operators
+Elixir identifiers must start with a letter or underscore, optionally followed by letters, digits, and underscores. Examples of variables
+
+- ~name~
+- ~_age~
+- ~_42~
+
+Module, record, protocol, and behavior names start with an uppercase letter, and are =BumpyCase=. All other identifiers start with a lowercase letter or an underscore, and by convention use underscores between words. If the first character is an underscore, Elixir doesn't report a warning if the variable is unused in a pattern match or function parameter list.
+
+By convention, source files use two-characters indention for nesting and they use spaces, not tabs, to achieve this.
+
+Comments start with a hash sign ~#~ and run to the end of a line.
+
+***** Truth
+Elixir has three special values related to =Boolean= operations: ~true~, ~false~, and ~nil~. ~nil~ is treated as false in =Boolean= contexts. In most contexts, any value other than ~false~ or ~nil~ is treated as true. We sometimes refer to this as =truthy= as opposed to ~true~.
+
 ** Thanks to
 [[https://pragprog.com/titles/elixir16/programming-elixir-1-6/][Programming Elixir 1.6]]
