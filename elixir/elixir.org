@@ -500,5 +500,54 @@ Comments start with a hash sign ~#~ and run to the end of a line.
 ***** Truth
 Elixir has three special values related to =Boolean= operations: ~true~, ~false~, and ~nil~. ~nil~ is treated as false in =Boolean= contexts. In most contexts, any value other than ~false~ or ~nil~ is treated as true. We sometimes refer to this as =truthy= as opposed to ~true~.
 
+***** Operators
+Elixir has a very rich set of operators. Here's a subset we'll use in this book:
+
+Comparison operators
+- ~a === b~  strict equality
+- ~a !== b~  strict inequality
+- ~a ==  b~  value equality
+- ~a !=  b~  value inequality
+- ~a >   b~  normal comparison
+- ~a >=  b~
+- ~a <   b~
+- ~a <=  b~
+
+Elixir is less strict than many languages when it comes to comparisons, as you can compare values of different types. If the types are the same or are compatible for example ~3 > 2~ or ~3.0 < 5~, the comparison uses natural ordering.
+
+****** Boolean operators
+These operators expect true or false as their first argument.
+
+#+begin_src elixir
+a or b     # true if a is true; otherwise b
+a and b    # false if a is false; otherwise b
+not a      # false if a is true; true otherwise
+#+end_src
+
+****** Relaxed boolean operators
+These operators take arguments of any type. Any value apart from ~nil~ or ~false~ is interpreted as true.
+
+#+begin_src elixir
+a || b    # a if a is truthy; otherwise b
+a && b    # b if a is truthy; otherwise a
+!a        # false if a is truthy; otherwise true
+#+end_src
+
+****** Arithmetic operators
+~+-*/ div rem~. Integer division yields a floating-point result Use ~div(a,b)~ to get an integer. ~rem~ is the =remainder operator=. It is called a function ~rem(11,3) => 2~. It differs from normal modulo operations in that the result will have the same sign as a function first argument.
+
+
+****** Join operators
+#+begin_src elixir
+binary1 <> binary2 # concatenates two binaries
+list ++ list2      # concatenates two lists
+list1 -- list2     # removes elements of list 2 from a copy of list 1
+#+end_src
+
+****** The in operator
+#+begin_src elixir
+a in enum # Tests if a is included in enum
+#+end_src
+
 ** Thanks to
 [[https://pragprog.com/titles/elixir16/programming-elixir-1-6/][Programming Elixir 1.6]]
