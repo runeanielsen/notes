@@ -13,7 +13,7 @@ Elixir empowers developers by providing macros. Elixir code is nothing more than
 *** Erlang VM
 In the Erlang VM everything runs in tiny concurrent processes, each with its own state. All communication happens by message-passing, exchanging messages between differnet machines on the same network transparently by the VM, making it a perfect environment for building distributed software.
 
-** Functions are data transformers
+*** Functions are data transformers
 Elixir lets us solve problems in the same way that Unix shell does. Rather than command-line utilities, we have functions. These functions we can string together as we please. The smaller and focused they are, the easier they're to reuse and combine.
 
 If we want, we can make these functions run in parallel, Elixir has a simple but powerful mechanism for passing messages between them. This mechanism provides the potential to run millions of them on a single machine and have hundreds of these machines inter-operating.
@@ -23,7 +23,7 @@ Bruce Tate commented on this paragraph with this thought:
 Most programmers treat threads and processes as a necessary evil; Elixir developers feel they are an important simplification. --- Bruce Tate
 #+end_quote
 
-** Compile and Run
+*** Compile and Run
 Elixir files will typically have the extension =.ex= or =.exs=. This is a convention--files ending in '.ex' are intended to be compiled into byte codes and then run, whereas those ending in =.exs.= are more like programs in scripting languages and are effectively interpreted at the source level.
 
 When you write tests for Elixir programs, you'll see that the application files have =.ex= extensions, whereas the tests have =.exs= because we don't need to keep compiled versions of the tests lying around.
@@ -154,6 +154,57 @@ Elixir's pattern matching is similar to Erlang's. The main difference being that
 Joe Armstrong, Erlang's creator, compares the equals sign in Erlang to that used in algebra. When you write the equation ~x = a + 1~, you are not assigning the value of ~a + 1~ to =x=. Instead you're simply asserting that the expressions =x= and ~a + 1~ have the same value. If you know the value of =x=, you can work out the value of =a=, and vice versa.
 
 His point is that you had to unlearn the algebraic meaning of === when you first came across assignment in imperative programming languages.
+
+** Immutability
+In Elixir, all values are immutable. The most complex nested list, the database record - these things behave just like the simplest integer. Their values are all immutable.
+
+In Elixir, once a variable references a list such as ~[1,2,3]~, you know it will always reference those same variables (until you rebind the variable). This makes concurrency a lot less dangerous.
+
+But what if you need to add 100 to each element in ~[1,2,3]~? Elixir does it by producing a copy of the original, containing the new values. The original remains unchanged, and your operation will not affect any other code holding a reference to that original.
+
+This fits with the idea that programming is about transforming data. When we update ~[1,2,3]~, we don't hack it in place. Instead we transform it into something new.
+
+*** Performance implications of immutability
+It would be easy to assume that enforcing immutability is inefficient. Because it would result in a lot of old values around to be garbage-collected.
+
+**** Copying data
+Common sense might dictate that all this copying of data is inefficient, the reverse is true. Because Elixir knows that existing data is immutable, it can reuse it, in part or as a whole, when building new structures.
+
+The following code. It uses a new operator, ~[ head | tail]~, which builds a new list with =head= as its first element and =tail= as the rest.
+
+#+begin_src iex
+iex> list1 = [3, 2, 1]
+[3, 2, 1]
+iex> list2 = [ 4 | list1 ]
+[4, 3, 2, 1]
+#+end_src
+
+In most languages, =list2= would be built by creating a new list containing the values 4, 3, 2, and 1. The three values in =list1= would be copied into the tail of =list2=. And that would be necessary because =list1= would be mutable.
+
+But Elixir knows =list1= will never change, so it simply constructs a new list with a head of 4 and a tail of =list4=.
+
+**** Garbage collection
+The other performance issue with a transformational language is that you quite often end up leaving old values unused when you create new values from them. This leaves a bunch of things using up memory on the heap, so garbage collection has to reclaim them.
+
+Most modern languages have a garbage collector, and developers have grown to be suspicious of them, they can impact performance quite badly.
+
+In Elixir you write your code using lots and lots of processes, and each process has its own heap. The data in your application is divided up between these processes, so each individual heap is much, much smaller than would have been the case if all the data had been in a single heap. As a result, garbage collection runs faster. If a process terminates before its heap becomes full, all its data is discarded, meaning no garbage collection is required.
+
+**** Coding with immutable data
+Once you accept the concept, coding with immutable data is surprisingly easy. You just have to remember that any function that transforms data will return a new copy of it. Thus, we never capitalize a string. Instead, we return a capitalized copy of a string.
+
+#+begin_src iex
+iex> name = "elixir"
+"elixir"
+iex> cap_name = String.capitalize name
+"Elixir"
+iex> name
+"elixir"
+#+end_src
+
+In object-oriented languages you would most of the time solve it by saying ~name.capitalize()~. But in object-oriented languages, objects mostly have mutable state. When you make a call such as ~name.capitalize()~ you have no immediate indication whether you are changing the internal representation of the name, returning a capitalized copy, or both. There's plenty of scope of ambiguity.
+
+In a functional language, we always transform data. We never modify it in place.
 
 ** Thanks to
 [[https://pragprog.com/titles/elixir16/programming-elixir-1-6/][Programming Elixir 1.6]]
