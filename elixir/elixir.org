@@ -5,7 +5,7 @@ Elixir is a pragmatic approach to functional programming. It values functional f
 Concurrency is the backbone of Elixir software. Elixir is made to free you from antiquated concurrency mechanisms.
 
 *** Functional language
-A functional language lets us think in terms of functions that transform data. This transformation never mutates data. Instead, each applicaiton of a function potentially creates a new, fresh version of the data. This reduces the need for data-synchronization mechanisms.
+A functional language lets us think in terms of functions that transform data. This transformation never mutates data. Instead, each application of a function potentially creates a new, fresh version of the data. This reduces the need for data-synchronization mechanisms.
 
 *** Macros
 Elixir empowers developers by providing macros. Elixir code is nothing more than data, and therefore can be manipulated via macros like any other value in the language.
@@ -147,6 +147,13 @@ iex> a = 2
 iex> [^a, 2] = [1, 2]
 (MatchError) no match of right hand side value: [1, 2]
 #+end_src
+
+**** Another way of looking at the Equals Sign
+Elixir's pattern matching is similar to Erlang's. The main difference being that Elixir allows a match to reassign to a variable that was assigned in a prior match, whereas in Erlang a variable can be assigned only once.
+
+Joe Armstrong, Erlang's creator, compares the equals sign in Erlang to that used in algebra. When you write the equation ~x = a + 1~, you are not assigning the value of ~a + 1~ to =x=. Instead you're simply asserting that the expressions =x= and ~a + 1~ have the same value. If you know the value of =x=, you can work out the value of =a=, and vice versa.
+
+His point is that you had to unlearn the algebraic meaning of === when you first came across assignment in imperative programming languages.
 
 ** Thanks to
 [[https://pragprog.com/titles/elixir16/programming-elixir-1-6/][Programming Elixir 1.6]]
