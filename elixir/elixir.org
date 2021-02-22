@@ -11,7 +11,7 @@ A functional language lets us think in terms of functions that transform data. T
 Elixir empowers developers by providing macros. Elixir code is nothing more than data, and therefore can be manipulated via macros like any other value in the language.
 
 *** Erlang VM
-In the Erlang VM everything runs in tiny concurrent processes, each with its own state. All communication happens by message-passing, exchanging messages between differnet machines on the same network transparently by the VM, making it a perfect environment for building distributed software.
+In the Erlang VM everything runs in tiny concurrent processes, each with its own state. All communication happens by message-passing, exchanging messages between different machines on the same network transparently by the VM, making it a perfect environment for building distributed software.
 
 *** Functions are data transformers
 Elixir lets us solve problems in the same way that Unix shell does. Rather than command-line utilities, we have functions. These functions we can string together as we please. The smaller and focused they are, the easier they're to reuse and combine.
@@ -170,7 +170,7 @@ It would be easy to assume that enforcing immutability is inefficient. Because i
 **** Copying data
 Common sense might dictate that all this copying of data is inefficient, the reverse is true. Because Elixir knows that existing data is immutable, it can reuse it, in part or as a whole, when building new structures.
 
-The following code. It uses a new operator, ~[ head | tail]~, which builds a new list with =head= as its first element and =tail= as the rest.
+The following code. It uses a new operator, ~[ head | tail ]~, which builds a new list with =head= as its first element and =tail= as the rest.
 
 #+begin_src iex
 iex> list1 = [3, 2, 1]
@@ -243,19 +243,100 @@ There is no fixed limit on the size of integers, their internal representation g
 **** Floating-point numbers
 Floating-point numbers are written using a decimal point. There must be at least one digit before and after the decimal point. An optional trailing exponent may be given. These are all valid floating-point literals:
 
-~1.0    0.2456    0.314159e1    314159.0e-5~
+- ~1.0~
+- ~0.2456~
+- ~0.314159e1~
+- ~314159.0e-5~
 
 Floats are IEEE 754 double precision, giving them about 16 digits of accuracy and a maximum exponent of around 10^308.
 
 **** Atoms
 =Atoms= are constants that represents something's name. We write them using a leading colon =:= which can be followed by an atom word or an Elixir operator. An atom word is a sequence of =UTF-8= letters (including combination-marks), digits, underscores, and at signs =@=. It may end with an exclamation point of a question mark. You can also create atoms containing arbitrary characters by enclosing the characters following the colon in double quotes. These are all atoms:
 
-~:fred    :is_binary?    :var@2    :<>    :===    :"func/3"    :"long john silver"~
+- ~:fred~
+- ~:is_binary?~
+- ~:var@2~
+- ~:<>~
+- ~:===~
+- ~:"func/3"~
+- ~:"long john silver"~
 
 An atom's name is its value. Two atoms with the same name will always compare as equal, even if they were created by different applications on two computers separated by an ocean.
 
 **** Ranges
 ~Ranges~ are represented as /start..end/, where =start= and =end= are integers.
+
+**** Regular expressions
+Elixir has regular-expression literals, written as =~r{regexp}= or =~r{regexp}opts=. Elixir regular expressions support is provided by =PCRE=, which basically provides a Perl 5-compatible syntax for patterns.
+
+#+begin_src iex
+iex> Regex.run ~r{[aeiou]}, "caterpillar"
+["a"]
+iex> Regex.scan ~r{[aeiou]}, "caterpillar"
+[["a"], ["e"], ["i"], ["a"]]
+iex> Regex.split ~r{[aeiou]}, "caterpillar"
+["c", "t", "rp", "ll", "r"]
+iex> Regex.replace ~r{[aeiou]}, "caterpillar", "*"
+"c*t*rp*ll*r"
+#+end_src
+
+*** System types
+These types reflect resources in the underlying =Erlang VM=.
+
+**** PIDs and Ports
+A =PID= is a reference to a local or remote process, and a =port= is a reference to a resource (typically external to the application) that you'll be reading or writing.
+
+The =PID= of the current process is available by calling =self=. A new =PID= is created when you spawn a new process.
+
+**** References
+The function ~make_ref~ creates a global unique reference; no other reference will be equal to it.
+
+*** Collection Types
+Elixir collections can hold values of any type (including other collections).
+
+**** Tuples
+A =tuple= is an ordered collection of values. As with all Elixir data structures, once created a tuple cannot be modified.
+
+You write a =tuple= between braces, separating the elements with commas.
+
+- ~{ 1, 2 }~
+- ~{ :ok, 42, "next" }~
+- ~{ :error, :enoent }~
+
+A typical Elixir =tuple= has two to four elements - any more and you should start looking at =maps= or =structs=.
+
+You can use tuples in pattern matching:
+
+#+begin_src iex
+iex> {status, count, action} = {:ok, 42, "next"}
+{:ok, 42, "next"}
+iex> status
+:ok
+iex> count
+42
+iex> action
+"next"
+#+end_src
+
+It is common for functions to return a tuple where the first element is the atom ~:ok~ if there were no errors. An example:
+
+#+begin_src iex
+iex> {status, file} = File.open("mix.exs")
+{:ok, #PID<0.39.0>}
+#+end_src
+
+Because the file was successfully opened, the tuple contains an ~:ok~ status and a =PID=, which is how we access the contents.
+
+A common practice is to write matches that assume success:
+
+#+begin_src iex
+iex> { :ok, file } = File.open("mix.exs")
+{:ok, #PID<0.39.0>}
+iex> {:ok, file} = File.open("non-existent-file")
+(MatchError) no match of right hand side value: {:error, :enoent}
+#+end_src
+
+The second open failed, and returned a tuple where the first element was =:error=. This caused the match to fail, and the error message shows that the second element contains the reason =enoent= which is Unix-speak for "file does not exist".
 
 ** Thanks to
 [[https://pragprog.com/titles/elixir16/programming-elixir-1-6/][Programming Elixir 1.6]]
